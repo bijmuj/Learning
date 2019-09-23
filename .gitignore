@@ -1,0 +1,9 @@
+Hangman/__pycache__/
+Snake/__pycache__/
+Tetris/__pycache__/
+Tetris/test.py
+Tetris/tetris.py
+Tetris/tetris2.py
+__pycache__/
+checkers/__pycache__/
+game.py
