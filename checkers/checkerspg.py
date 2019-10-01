@@ -24,6 +24,7 @@ class Game():
             "black": pg.Surface((75, 75)),
             "hl": pg.Surface((75, 75))
         }
+        self.surfaces["hl"].set_colorkey((0, 0, 0))
         self.fill()
 
         self.checkers = ch.Game(turn)
@@ -52,8 +53,7 @@ class Game():
         Most of the drawing
         """
         self.screen.blit(self.surfaces["bg"], (0, 0))
-        self.screen.blit(self.surfaces["hl"],
-                         (self.cursor[0]*75, self.cursor[1]*75))
+
         for i in range(1, 72):
             if i % 9:
                 if self.checkers.board.filledby(i) == 'r':
@@ -62,6 +62,8 @@ class Game():
                 elif self.checkers.board.filledby(i) == 'b':
                     self.screen.blit(
                         self.surfaces["black"], ((i-1) % 9*75, i//9*75))
+        self.screen.blit(self.surfaces["hl"],
+                         (self.cursor[0]*75, self.cursor[1]*75))
         pg.display.flip()
 
     def move(self, keys):

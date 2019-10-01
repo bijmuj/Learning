@@ -47,7 +47,7 @@ class Game():
                         running = False
             tick += 1
             if pressed and tick % 2 == 0:
-                self.board.manip(event.key)
+                self.board.manip(pg.key.get_pressed())
             if not tick % 10:
                 if not a:
                     a = self.board.fall()
