@@ -1,3 +1,10 @@
-Games made while learning Pygame\n
-The pygame versions of hangman and checkers are kinda broken\n
+Games made while learning Pygame
+
+
+The pygame versions of hangman and checkers are kinda broken
+
+
 Tetris is incomplete
+
+
+Snake works pretty well but its inefficient
