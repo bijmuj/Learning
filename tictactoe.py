@@ -23,7 +23,7 @@ def takeinput(board):
                 pos = -1
             if board[pos] != ' ':
                 pos = -1
-            if pos != -1:
+             if pos != -1:
                 spaces -= 1
         except:
             print("enter a valid position")
@@ -58,8 +58,7 @@ def checkwin(board):
             return board[3]
 
     return 'na'
-
-
+        
 board = [' ']*10
 
 while not win and spaces:

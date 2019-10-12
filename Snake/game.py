@@ -76,7 +76,7 @@ class Game():
                         self.snake.move(event.key)
             if self.snake.x[0]+10 == self.apple.x and self.snake.y[0]+10 == self.apple.y:
                 self.eat()
-            self.clock.tick(self.fps//4)
+            self.clock.tick(self.fps//6)
             self.snake.update()
             self.draw()
         if not self.snake.alive:
