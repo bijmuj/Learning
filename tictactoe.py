@@ -1,18 +1,24 @@
+import os
+
+
 turn = 'X'
 win = False
 spaces = 9
 
 
+def clear():
+    return os.system('cls')
+
+
 def draw(board):
-    global turn
     for i in range(2, -1, -1):
-        print(' ' + board[i*3+1] + '|' +
-              board[i*3+2] + '|' + board[i*3+3])
+        r = i*3
+        print(' ' + board[r] + '|' +
+              board[r+1] + '|' + board[r+2])
 
 
-def takeinput(board):
+def takeinput(board, spaces, turn):
     pos = -1
-    global turn
     print(turn + "'s turn:")
 
     while pos == -1:
@@ -21,57 +27,54 @@ def takeinput(board):
             pos = int(input())
             if(pos < 1 or pos > 9):
                 pos = -1
-            if board[pos] != ' ':
+            elif board[pos - 1] != ' ':
                 pos = -1
-            if pos != -1:
-                spaces -= 1
         except:
             print("enter a valid position")
-
-    board[pos] = turn
+    spaces -= 1
+    board[pos - 1] = turn
     if turn == 'X':
         turn = 'O'
     else:
         turn = 'X'
+    return board, spaces, turn
 
 
 def checkwin(board):
-    global win
+    # could probably make this better
     for i in range(0, 3):
-        if board[i*3+1] == board[i*3+2] and board[i*3+1] == board[i*3+3]:
-            if not(board[i*3+1] == ' '):
-                win = True
-                return board[i*3+1]
-        elif board[1+i] == board[4+i] and board[1+i] == board[7+i]:
-            if not(board[i+1] == ' '):
-                win = True
-                return board[1+i]
+        # rows
+        r = i*3
+        if board[r] != ' ':
+            if board[r] == board[r+1] and board[r+1] == board[r+2]:
+                return board[r]
+        # columns
+        if board[i] != ' ':
+            if board[i] == board[i+3] and board[i] == board[i+6]:
+                return board[i]
+    # diagonals
+    if board[0] != ' ':
+        if (board[0] == board[4] and board[4] == board[8]):
+            return board[0]
+    if board[2] != ' ':
+        if (board[2] == board[4] and board[4] == board[6]):
+            return board[2]
 
-    if (board[1] == board[5] and board[5] == board[9]):
-        if board[1] != ' ':
-            win = True
-            return board[1]
-
-    if (board[3] == board[5] and board[5] == board[7]):
-        if board[3] != ' ':
-            win = True
-            return board[3]
-
-    return 'na'
+    return 0
 
 
-board = [' ']*10
+board = [' ']*9
 
 while not win and spaces:
     draw(board)
-
-    takeinput(board)
-
-    checkwin(board)
+    board, spaces, turn = takeinput(board, spaces, turn)
+    win = checkwin(board)
+    clear()
 
 draw(board)
 
 if not win and not spaces:
     print("draw")
 elif win:
-    print('{0} wins'.format(checkwin(board)))
+    print('{0} wins'.format(win))
+    input()
