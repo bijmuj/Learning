@@ -1,4 +1,17 @@
 import random
+import os
+
+
+def clear():
+    return os.system('cls')
+
+
+def make_list():
+    """
+    Pretty inefficient way to get the word list in I think?
+    """
+    wordlist = open('words.txt', 'r')
+    return wordlist.readlines()
 
 
 class Hangman():
@@ -7,53 +20,32 @@ class Hangman():
     """
 
     def __init__(self):
-        self.wlist = []
-        self.make_list()
-        self.word = []
-        self.get_word()
+        self.word, self.spaces = self.get_word()
         self.attempts = 6
         self.used_letters = []
         self.wrong = ""
-        self.spaces = len(self.word)
-
-    def make_list(self):
-        """
-        Pretty inefficient way to get the word list in
-        """
-        wordlist = open('words.txt', 'r')
-        self.wlist = wordlist.readlines()
 
     def get_word(self):
         """
         Generate random index and get the word at that index in lower case
         Currently no of words in list is hardcoded in(854)
         """
+        wlist = make_list()
         index = random.randint(0, 855)
-        self.word = list(self.wlist[index].lower())
-        self.word = self.word[:-1]
-        # really should be using this to find upper limit for randint
-        # def file_len(fname):
-        #     with open(fname) as f:
-        #         for i, l in enumerate(f):
-        #             pass
-        #     return i + 1
-        # finds no of lines in file
+        word = list(wlist[index].lower())[:-1]
+        return word, len(word)
 
     def print_word(self):
         """
-        print 
+        Pretty self explanatory
         """
-        spaces = self.spaces
         print("Attemps remaining:", self.attempts)
         print(self.wrong)
-        for i in self.word:
-            if i in self.used_letters:
-                print(i, " ", end='')
-                spaces -= 1
+        for letter in self.word:
+            if letter in self.used_letters:
+                print(letter, " ", end='')
             else:
                 print("_ ", end='')
-        if spaces == 0:
-            self.spaces = 0
         print()
 
     def check(self, letter):
@@ -63,15 +55,16 @@ class Hangman():
         Arguments:
             letter {char} -- [single letter]
         """
-        if letter in self.word and not letter in self.used_letters:
-            self.used_letters.append(letter)
-        elif letter in self.used_letters:
+        if letter in self.used_letters:
             print("Letter already used\n")
         else:
-            self.attempts -= 1
             self.used_letters.append(letter)
-            self.wrong += letter
-            print("Letter not present\n")
+            if letter not in self.word:
+                self.attempts -= 1
+                self.wrong += letter
+                print("Letter not present\n")
+            else:
+                self.spaces -= self.word.count(letter)
 
     def get_input(self):
         """
@@ -80,7 +73,7 @@ class Hangman():
         if right length call check
         """
         self.print_word()
-        while self.attempts != 0 and self.spaces != 0:
+        while self.attempts and self.spaces:
             letter = input("Enter a letter:")
             if len(letter) != 1:
                 print("Input single letter\n")
@@ -93,6 +86,8 @@ class Hangman():
         if self.spaces == 0:
             print("You win\n")
         else:
+            # a bit janky but works
+            print("Word is: {0}".format("".join(self.word)))
             print("You lose\n")
 
 
