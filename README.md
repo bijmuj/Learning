@@ -9,4 +9,5 @@
 
 - Snake works pretty well but is inefficient
 
--pushh attempt
+
+- Asteroids feels bootleg. Should probably make it better if.
